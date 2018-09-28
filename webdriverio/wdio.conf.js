@@ -1,6 +1,4 @@
 exports.config = {
-    host: 'hub',
-    port: 4444,
 
     specs: [
         './test/specs/**/*.js'
