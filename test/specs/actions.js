@@ -1,5 +1,5 @@
 exports.gotoHomepage = function(splash) {
-  browser.url('/');
+  browser.url('https://losestudiantes.co');
   if(splash) {
     browser.click('button=Cerrar');
   }
@@ -23,12 +23,12 @@ exports.login = function(email, password, message) {
   cajaLogIn.element('button=Ingresar').click()
   if(message == '') {
     browser.waitForVisible('button[id="cuenta"]', 5000);
-    expect(browser.isVisible('button[id="cuenta"]')).to.be.equals(true);
+    expect(browser.isVisible('button[id="cuenta"]')).toBe(true);
   }
   else {
     browser.waitForVisible('.aviso.alert.alert-danger', 5000);
     var alertText = browser.element('.aviso.alert.alert-danger').getText();
-    expect(alertText).to.include(message);
+    expect(alertText).toBe(message);
   }
 };
 
@@ -71,10 +71,10 @@ exports.signup = function(firstname, lastname, email, password, program_id, acce
 
   browser.waitForVisible('.sweet-alert', 5000);
   var alertText = browser.element('.sweet-alert').element('h2').getText();
-  expect(alertText).to.include(message);
+  expect(alertText).toBe(message);
 };
 
-exports.delay = function(ms) {
+delay = function(ms) {
     var cur_d = new Date();
     var cur_ticks = cur_d.getTime();
     var ms_passed = 0;
@@ -84,4 +84,14 @@ exports.delay = function(ms) {
         ms_passed = ticks - cur_ticks;
         // d = null;  // Prevent memory leak?
     }
+}
+
+exports.search_professor = function(name, message) {
+  browser.waitForVisible('input[role="combobox"]', 5000);
+  browser.setValue('input[role="combobox"]', name);
+  delay(2000);
+  browser.element('input[role="combobox"]').keys("Enter");
+
+  browser.waitForVisible('.descripcionProfesor', 5000);
+  expect(browser.getText('.nombreProfesor')).toBe(message);
 };
